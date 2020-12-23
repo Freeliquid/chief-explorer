@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "AGPL-3.0",
-  "homepage": "https://chief.makerdao.com",
+  "homepage": "https://vote.freeliquid.io",
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -35,3 +35,4 @@
     ]
   }
 }
+
