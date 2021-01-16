@@ -3,7 +3,7 @@ import './App.css';
 import web3, { initWeb3 } from './web3';
 import ReactNotify from './notify';
 import { printNumber, etherscanTx, etherscanAddress, etherscanToken } from './helpers';
-import logo from './makerdao.svg';
+import logo from './img/landing_fl.svg';
 
 var dschief = require('./abi/dschief.json');
 var dstoken = require('./abi/dstoken.json');
@@ -57,7 +57,7 @@ class App extends Component {
       if (isConnected) {
         web3.eth.getBlock('latest', (e, res) => {
           if (typeof(res) === 'undefined') {
-            console.debug('YIKES! getBlock returned undefined!');
+            console.log('YIKES! getBlock returned undefined!');
           }
           if (res.number >= this.state.network.latestBlock) {
             const networkState = { ...this.state.network };
@@ -67,10 +67,10 @@ class App extends Component {
           } else {
             // XXX MetaMask frequently returns old blocks
             // https://github.com/MetaMask/metamask-plugin/issues/504
-            console.debug('Skipping old block');
+            console.log('Skipping old block');
           }
         });
-      }
+      } else console.log('not connected')
 
       // Check which network are we connected to
       // https://github.com/ethereum/meteor-dapp-wallet/blob/90ad8148d042ef7c28610115e97acfa6449442e3/app/client/lib/ethereum/walletInterface.js#L32-L46
@@ -81,15 +81,18 @@ class App extends Component {
             if (!e) {
               switch (res.hash) {
                 case '0xa3c565fc15c7478862d50ccd6561e3c06b24cc509bf388941c25ea985ce32cb9':
-                  network = 'kovan';
+                network = 'kovan';
+                //Session.set('network', 'kovan');
                   break;
                 case '0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3':
                   network = 'main';
-                  break;
+                  //Session.set('network', 'main');
+                break;
                 default:
                   console.log('setting network to private');
                   console.log('res.hash:', res.hash);
                   network = 'private';
+                  //Session.set('network', 'private');
               }
             }
             if (this.state.network.network !== network) {
@@ -99,6 +102,7 @@ class App extends Component {
         } else {
           const networkState = { ...this.state.network };
           networkState['isConnected'] = isConnected;
+          console.log('Connected');
           networkState['network'] = false;
           networkState['latestBlock'] = 0;
           this.setState({ network: networkState });
@@ -475,7 +479,9 @@ class App extends Component {
   }
 
   getValueHatSpell = (field) => {
+   
     return new Promise((resolve, reject) => {
+      
       spellContract.at(this.state.hat)[field]((e, r) => {
         if (!e) {
           resolve(r);
@@ -496,12 +502,13 @@ class App extends Component {
               Promise.resolve(this.getContractABIFromEtherscan(r2[0])).then(r3 => {
                 const sig = r2[2].substring(0, 10);
                 let abi = [];
+                
                 JSON.parse(r3.result).forEach(value => {
                   if (this.methodSig(`${value.name}(${value.inputs.map(val => val.type).join(',')})`) === sig) {
                     abi = value;
                   }
                 });
-                this.setState({ hatSpell: { 'whom': r2[0], 'mana': r2[1], 'data': r2[2], 'done': r2[3], 'abi': abi } });
+                //this.setState({ hatSpell: { 'whom': r2[0], 'mana': r2[1], 'data': r2[2], 'done': r2[3], 'abi': abi } });
               });
             }
           }, e => {});
@@ -710,6 +717,7 @@ class App extends Component {
   renderChiefData = () => {
     const hatSpellParams = [];
     if (this.state.hatSpell.abi) {
+   
       let i = 0;
       this.state.hatSpell.abi.inputs.forEach(input => {
         let val = this.state.hatSpell.data.substring(10 + i * 64, 10 + (i + 1) * 64);
@@ -827,7 +835,7 @@ class App extends Component {
                 <div className="row">
                   <div className="col-md-12">
                     <form ref={ (input) => this.lockFreeForm = input } onSubmit={ e => this.lockFree(e) }>
-                      <input ref={ (input) => this.amount = input } type="number" step="0.000000000000000001" placeholder="Amount to be locked/freed" style={ {width: '200px'} }/>
+                      <input ref={ (input) => this.amount = input } type="number" step="0.000000000000000001" placeholder="Amount to be locked/freed"/>
                       <select ref={ (input) => this.methodLF = input } >
                         <option value="lock">Lock</option>
                         <option value="free">Free</option>
@@ -1028,7 +1036,7 @@ class App extends Component {
       <div className="content-wrapper">
         <section className="content-header">
           <h1>
-            <a href="/" className="logo"><img src={ logo } alt="Chief Explorer" width="50" /> - Chief Explorer</a>
+            <a href="/" className="logo"><img src={ logo } alt="Vote Freeliquid" width="50" /> - Vote Freeliquid</a>
           </h1>
         </section>
         <section className="content">
@@ -1040,7 +1048,7 @@ class App extends Component {
                     <h3 className="warning-text"> 
                       <strong style={{fontWeight: "bold"}}> Warning </strong> 
                       <br /> 
-                      Potential Risk - This page displays the current MKR weighting of each Governance proposal and has the ability to lock/free user balances, create slates, cast votes, and lift proposal addresses. It should be used at the user's own risk.
+                      Potential Risk - This page displays the current FL weighting of each Governance proposal and has the ability to lock/free user balances, create slates, cast votes, and lift proposal addresses. It should be used at the user's own risk.
                     </h3>
                   </div>
                 </div>

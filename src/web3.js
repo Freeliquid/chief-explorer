@@ -9,7 +9,8 @@ const initWeb3 = async web3 => {
     try {
       if (window.web3 || window.ethereum) {
         if (window.ethereum) {
-          await window.ethereum.enable();
+          console.log(window.ethereum)
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
           web3.setProvider(window.ethereum);
         } else {
           web3.setProvider(window.web3.currentProvider);
