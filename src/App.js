@@ -233,7 +233,8 @@ class App extends Component {
           const latestBlock = r.number;
           const blockGap = 10000;
           const blocksToFetch = [];
-          for (let fromBlock = 0; fromBlock < latestBlock; fromBlock += (blockGap + 1)) {
+          const startBlock = settings.chain[this.state.network.network].startBlock;
+          for (let fromBlock = startBlock; fromBlock < latestBlock; fromBlock += (blockGap + 1)) {
             blocksToFetch.push([fromBlock, fromBlock + blockGap]);
           }
           const _slates = await Promise.all(blocksToFetch.map(([fromBlock, toBlock]) =>
