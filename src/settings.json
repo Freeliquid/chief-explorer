@@ -6,6 +6,9 @@
     "kovan": {
       "chief": "0x3a5D5Fd426934d43a4D3d34b36e767346485d8C8"
     },
+    "rinkeby": {
+      "chief": "0xF7BaAA066E2F46A1ad53c53E3415d053C0E03e1f"
+    },
     "main": {
       "chief": "0x72FaD6ffF363ec7f39136331416491Aba01EAF4a"
     }
