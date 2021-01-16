@@ -508,7 +508,7 @@ class App extends Component {
                     abi = value;
                   }
                 });
-                //this.setState({ hatSpell: { 'whom': r2[0], 'mana': r2[1], 'data': r2[2], 'done': r2[3], 'abi': abi } });
+                this.setState({ hatSpell: { 'whom': r2[0], 'mana': r2[1], 'data': r2[2], 'done': r2[3], 'abi': abi } });
               });
             }
           }, e => {});
